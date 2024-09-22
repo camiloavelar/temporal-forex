@@ -1,46 +1,18 @@
 package forex
 
 import (
-	"log/slog"
-	messagebroker "temporalavenue/message-broker"
+	"context"
+
+	"go.temporal.io/sdk/client"
 )
 
-func (f Forex) StartForex() {
-	slog.Info("💸 starting forex validations")
-	if !IsForexEnabled() {
-		slog.Warn("forex is not enabled")
-		return
+func (f Forex) StartForex(ctx context.Context) error {
+	options := client.StartWorkflowOptions{
+		TaskQueue: "task-queue",
 	}
 
-	if !MarketOpen() {
-		slog.Warn("forex is not enabled")
-		return
-	}
+	_, err := f.temporalClient.ExecuteWorkflow(ctx, options, "ForexWorkflow")
 
-	if !IsBusinessDay() {
-		slog.Warn("is not business day")
-		return
-	}
-
-	if !IsValidQuotation() {
-		slog.Warn("quotation is not valid")
-		return
-	}
-
-	if !IsValidAccount() {
-		slog.Warn("account is not valid")
-		return
-	}
-
-	slog.Info("✅ all validations are ok")
-
-	f.CheckAccountLimit()
+	return err
 }
 
-func (f Forex) CheckAccountLimit() {
-	slog.Info("sending message to check limit")
-	f.messageBroker.SendMessage(messagebroker.Message{
-		MessageType: messagebroker.CheckLimitMessage,
-		Message:     "please check limit",
-	})
-}

@@ -4,6 +4,7 @@ type (
 	Message struct {
 		MessageType int
 		Message     string
+		Token       []byte
 	}
 
 	broker struct {

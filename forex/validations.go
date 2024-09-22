@@ -1,28 +1,31 @@
 package forex
 
-import "log/slog"
+import (
+	"context"
+	"log/slog"
+)
 
-func IsForexEnabled() bool {
+func IsForexEnabled(_ context.Context) (bool, error) {
 	slog.Info("forex is enabled")
-	return true
+	return true, nil
 }
 
-func MarketOpen() bool {
+func MarketOpen(_ context.Context) (bool, error) {
 	slog.Info("market is open")
-	return true
+	return true, nil
 }
 
-func IsBusinessDay() bool {
+func IsBusinessDay(_ context.Context) (bool, error) {
 	slog.Info("is business day")
-	return true
+	return true, nil
 }
 
-func IsValidQuotation() bool {
+func IsValidQuotation(_ context.Context) (bool, error) {
 	slog.Info("quotation is valid")
-	return true
+	return true, nil
 }
 
-func IsValidAccount() bool {
+func IsValidAccount(_ context.Context) (bool, error) {
 	slog.Info("account is valid")
-	return true
+	return true, nil
 }
