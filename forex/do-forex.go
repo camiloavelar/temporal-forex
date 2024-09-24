@@ -4,6 +4,7 @@ import (
 	"context"
 	"log/slog"
 	messagebroker "temporalavenue/message-broker"
+	"time"
 
 	"go.temporal.io/sdk/activity"
 )
@@ -12,6 +13,8 @@ func (f *Forex) DoForex(ctx context.Context, forex string, taskToken []byte) err
 	slog.Info("received do forex message", "message", forex)
 	slog.Info("sending forex to central bank...")
 	slog.Info("✅ forex sent to central bank, now crediting US account")
+
+	time.Sleep(2 * time.Second)
 
 	return f.temporalClient.CompleteActivity(ctx, taskToken, nil, nil)
 }
